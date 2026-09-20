@@ -1,0 +1,1067 @@
+/* ===========================================================
+        VitaCore AI - AI Exercise Detection
+        PART 1
+=========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+
+    --bg:#08111F;
+    --card:#182235;
+    --primary:#3B82F6;
+    --green:#22C55E;
+    --orange:#F97316;
+    --text:#FFFFFF;
+    --text2:#A8B5CF;
+
+}
+
+body{
+
+    background:
+    radial-gradient(circle at top left,#3B82F622,transparent 40%),
+    radial-gradient(circle at bottom right,#22C55E22,transparent 40%),
+    var(--bg);
+
+    color:white;
+
+    min-height:100vh;
+
+}
+
+/* ======================================
+        CONTAINER
+====================================== */
+
+.exercise-container{
+
+    width:92%;
+
+    max-width:1500px;
+
+    margin:auto;
+
+    padding:45px 0;
+
+}
+
+/* ======================================
+        HEADER
+====================================== */
+
+.exercise-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.exercise-header h1{
+
+    font-size:42px;
+
+    font-weight:800;
+
+}
+
+.exercise-header p{
+
+    color:var(--text2);
+
+    margin-top:8px;
+
+    font-size:17px;
+
+}
+
+/* ======================================
+        CAMERA STATUS
+====================================== */
+
+.camera-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:rgba(24,34,53,.92);
+
+    padding:14px 22px;
+
+    border-radius:18px;
+
+    font-weight:600;
+
+}
+
+.status-dot{
+
+    width:14px;
+
+    height:14px;
+
+    background:#22C55E;
+
+    border-radius:50%;
+
+    animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        box-shadow:0 0 0 0 rgba(34,197,94,.6);
+
+    }
+
+    100%{
+
+        box-shadow:0 0 0 12px rgba(34,197,94,0);
+
+    }
+
+}
+
+/* ======================================
+        CONTROL CARD
+====================================== */
+
+.controls-card{
+
+    background:rgba(24,34,53,.95);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+.exercise-select{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.exercise-select label{
+
+    color:#A8B5CF;
+
+}
+
+.exercise-select select{
+
+    width:260px;
+
+    padding:12px 15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#101C2D;
+
+    color:white;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.buttons .btn{
+
+    padding:12px 28px;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.buttons .btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ======================================
+        MAIN GRID
+====================================== */
+
+.main-grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:25px;
+
+    margin-bottom:30px;
+
+}
+/* ===========================================================
+        CAMERA CARD
+=========================================================== */
+
+.camera-card{
+
+    background:rgba(24,34,53,.95);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+.camera-card h3{
+
+    margin-bottom:20px;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.camera-box{
+
+    position:relative;
+
+    width:100%;
+
+    height:550px;
+
+    background:#101C2D;
+
+    border:3px dashed rgba(255,255,255,.15);
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.camera-box img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* ===========================================================
+        LIVE STATS
+=========================================================== */
+
+.stats-card{
+
+    background:rgba(24,34,53,.95);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+.stats-card h3{
+
+    margin-bottom:25px;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.stat{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+    padding:16px;
+
+    background:#101C2D;
+
+    border-radius:16px;
+
+}
+
+.stat span{
+
+    color:#A8B5CF;
+
+}
+
+.stat strong{
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+#repCount{
+
+    color:#3B82F6;
+
+}
+
+#accuracy{
+
+    color:#22C55E;
+
+}
+
+#calories{
+
+    color:#F97316;
+
+}
+
+#timer{
+
+    color:#FFFFFF;
+
+}
+
+/* ===========================================================
+        AI FEEDBACK
+=========================================================== */
+
+.feedback-card{
+
+    background:rgba(24,34,53,.95);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+    border-left:6px solid #22C55E;
+
+}
+
+.feedback-card h3{
+
+    margin-bottom:18px;
+
+}
+
+#statusText{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:#D8E2F1;
+
+}
+
+/* ===========================================================
+        SESSION SUMMARY
+=========================================================== */
+
+.session-card{
+
+    background:rgba(24,34,53,.95);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+}
+
+.session-card h3{
+
+    margin-bottom:25px;
+
+}
+
+.session-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+.session-grid div{
+
+    background:#101C2D;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    text-align:center;
+
+}
+
+.session-grid small{
+
+    color:#A8B5CF;
+
+    display:block;
+
+    margin-bottom:8px;
+
+}
+
+.session-grid h5{
+
+    font-size:22px;
+
+    font-weight:700;
+
+}
+
+/* ===========================================================
+        FOOTER BUTTON
+=========================================================== */
+
+.footer-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-top:30px;
+
+}
+
+.footer-buttons .btn{
+
+    background:linear-gradient(135deg,#3B82F6,#2563EB);
+
+    border:none;
+
+    border-radius:16px;
+
+    padding:14px 34px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.footer-buttons .btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 35px rgba(59,130,246,.30);
+
+}
+
+/* ===========================================================
+        RESPONSIVE
+=========================================================== */
+
+@media(max-width:1100px){
+
+    .main-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .session-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .exercise-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .controls-card{
+
+        flex-direction:column;
+
+        gap:20px;
+
+        align-items:flex-start;
+
+    }
+
+    .buttons{
+
+        width:100%;
+
+        flex-wrap:wrap;
+
+    }
+
+    .buttons .btn{
+
+        flex:1;
+
+    }
+
+    .exercise-select select{
+
+        width:100%;
+
+    }
+
+    .camera-box{
+
+        height:320px;
+
+    }
+
+    .session-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+/* ==========================================================
+        WORKOUT SUMMARY MODAL
+========================================================== */
+
+.summary-modal{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.75);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(8px);
+
+    animation:fadeIn .35s ease;
+
+}
+
+/* ==========================================================
+        POPUP BOX
+========================================================== */
+
+.summary-box{
+
+    width:92%;
+
+    max-width:520px;
+
+    background:#182235;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+
+    animation:popup .35s ease;
+
+}
+
+.summary-box h2{
+
+    text-align:center;
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    margin-bottom:15px;
+
+}
+
+.summary-box hr{
+
+    border-color:rgba(255,255,255,.1);
+
+    margin-bottom:25px;
+
+}
+
+/* ==========================================================
+        SUMMARY ROWS
+========================================================== */
+
+.summary-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:14px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.summary-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.summary-item span{
+
+    color:#A8B5CF;
+
+    font-size:17px;
+
+}
+
+.summary-item strong{
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+/* ==========================================================
+        BUTTONS
+========================================================== */
+
+.summary-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+.summary-buttons .btn{
+
+    flex:1;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.summary-buttons .btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ==========================================================
+        LIGHT MODE
+========================================================== */
+
+body.light .summary-box{
+
+    background:#ffffff;
+
+}
+
+body.light .summary-box h2{
+
+    color:#111827;
+
+}
+
+body.light .summary-item strong{
+
+    color:#111827;
+
+}
+
+body.light .summary-item span{
+
+    color:#4B5563;
+
+}
+
+body.light .summary-box hr{
+
+    border-color:#E5E7EB;
+
+}
+
+/* ==========================================================
+        ANIMATIONS
+========================================================== */
+
+@keyframes popup{
+
+    from{
+
+        transform:scale(.85);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+/* ==========================================
+        AI FORM ANALYSIS
+========================================== */
+
+.status-bar{
+
+    background:#1F2937;
+
+    border-radius:18px;
+
+    padding:22px;
+
+    margin-bottom:22px;
+
+    border-left:6px solid #4F46E5;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+}
+
+.status-bar h3{
+
+    color:white;
+
+    font-size:26px;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.status-title{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.status-tips{
+
+    color:#D1D5DB;
+
+    padding-left:208x;
+
+    margin:0;
+
+}
+
+.status-tips li{
+
+    margin-bottom:8px;
+
+    font-size:16px;
+
+    line-height:1.7;
+
+}
+
+/* Light Mode */
+
+body.light .status-bar{
+
+    background:#ffffff;
+
+}
+
+body.light .status-bar h3{
+
+    color:#111827;
+
+}
+
+body.light .status-title{
+
+    color:#111827;
+
+}
+
+body.light .status-tips{
+
+    color:#374151;
+
+}
+.success-popup{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.popup-box{
+
+    width:360px;
+
+    background:#16213E;
+
+    border:1px solid rgba(0,150,255,.3);
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 0 35px rgba(0,120,255,.35);
+
+    animation:popup .3s ease;
+
+}
+
+.popup-icon{
+
+    width:75px;
+
+    height:75px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:linear-gradient(135deg,#1DA1F2,#6C63FF);
+
+    color:white;
+
+    font-size:38px;
+
+    margin-bottom:18px;
+
+}
+
+.popup-box h3{
+
+    color:white;
+
+    font-weight:700;
+
+}
+
+.popup-box p{
+
+    color:#C9D3F0;
+
+    margin:12px 0 25px;
+
+}
+
+.popup-box button{
+
+    border:none;
+
+    padding:12px 30px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-weight:600;
+
+    background:linear-gradient(135deg,#2196F3,#6C63FF);
+
+}
+
+@keyframes popup{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.8);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+.camera-placeholder{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#18233A;
+
+    color:#9DB8E5;
+
+    text-align:center;
+
+    z-index:2;
+
+}
+.camera-placeholder i{
+
+    font-size:70px;
+
+    color:#4F8DFF;
+
+    margin-bottom:20px;
+
+}
+
+.camera-placeholder h4{
+
+    color:white;
+
+    margin-bottom:8px;
+
+}
+#cameraFeed{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+}

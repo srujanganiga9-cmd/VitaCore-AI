@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Today's Nutrition Log | VitaCore AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/today_intake.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top-header">
+
+        <div>
+
+            <h1>🍽 Today's Nutrition Log</h1>
+
+            <p>
+                View, manage and track everything you ate today.
+            </p>
+
+        </div>
+
+        <a href="/dashboard" class="back-btn">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+    <!-- Meal Cards -->
+
+    <div class="meal-container">
+
+        {% for meal in ["Breakfast","Lunch","Dinner","Snacks"] %}
+
+        <div class="meal-card">
+
+            <h2>
+
+                {% if meal=="Breakfast" %}
+                    🍳
+                {% elif meal=="Lunch" %}
+                    🍛
+                {% elif meal=="Dinner" %}
+                    🍽
+                {% else %}
+                    🥪
+                {% endif %}
+
+                {{ meal }}
+
+                ({{ grouped[meal]|length }})
+
+            </h2>
+
+            {% if grouped[meal] %}
+
+                {% for food in grouped[meal] %}
+
+                <div class="food-item">
+
+                    <div>
+
+                        <h4>
+
+                            {{ food.food_name }}
+
+                        </h4>
+
+                        <p>
+
+                            {{ food.quantity }} g
+
+                            •
+
+                            {{ food.calories }} kcal
+
+                        </p>
+
+                    </div>
+
+                    <!-- Delete button (next step) -->
+                     <button class="delete-btn" onclick="deleteFood({{ food.id }})">
+
+                         <i class="bi bi-trash3-fill"></i>
+                     </button>
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty">
+
+                    🥗
+
+                    <p>No food added yet.</p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+    <div class="summary-card">
+
+    <h2>📊 Today's Nutrition Summary</h2>
+
+    <div class="summary-grid">
+
+        <div class="summary-item">
+            🔥
+            <h3>{{ "%.1f"|format(total_calories) }}</h3>
+            <p>Calories</p>
+        </div>
+
+        <div class="summary-item">
+            🍗
+            <h3>{{ "%.1f"|format(total_protein) }} g</h3>
+            <p>Protein</p>
+        </div>
+
+        <div class="summary-item">
+            🍚
+            <h3>{{ "%.1f"|format(total_carbs) }} g</h3>
+            <p>Carbs</p>
+        </div>
+
+        <div class="summary-item">
+            🥑
+            <h3>{{ "%.1f"|format(total_fat) }} g</h3>
+            <p>Fat</p>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+<!-- Delete Modal -->
+
+<div id="deleteModal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-icon">
+            🗑
+        </div>
+
+        <h2>Delete Food</h2>
+
+        <p id="deleteText">
+            Are you sure?
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-btn"
+                onclick="closeDeleteModal()">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="delete-confirm-btn"
+                onclick="confirmDelete()">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+let deleteFoodId = null;
+
+function deleteFood(id){
+
+    deleteFoodId = id;
+
+    document
+        .getElementById("deleteModal")
+        .classList.add("show");
+
+}
+
+function closeDeleteModal(){
+
+    document
+        .getElementById("deleteModal")
+        .classList.remove("show");
+
+}
+
+async function confirmDelete(){
+
+    const response = await fetch(
+
+        `/delete_food/${deleteFoodId}`,
+
+        {
+
+            method:"POST"
+
+        }
+
+    );
+
+    const data = await response.json();
+
+    if(data.success){
+
+        location.reload();
+
+    }
+
+}
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Workout History | VitaCore AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/workout_history.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+
+        {% for category, message in messages %}
+
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+{% endwith %}
+
+    <!-- Header -->
+    <div class="top-bar">
+
+        <h1>📅 Workout History</h1>
+
+        <a href="{{ url_for('dashboard') }}" class="back-btn">
+
+             ←    Dashboard
+        </a>
+
+    </div>
+
+    <!-- Total Workouts -->
+    <div class="summary">
+
+        <h3>Total Workouts : {{ workouts|length }}</h3>
+
+    </div>
+
+    <!-- Workout Table -->
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Exercise</th>
+                <th>Reps</th>
+                <th>Calories</th>
+                <th>Accuracy</th>
+                <th>Duration</th>
+                <th>Date</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% if workouts %}
+
+            {% for workout in workouts %}
+
+            <tr>
+
+                <td>{{ workout.exercise }}</td>
+
+                <td>{{ workout.reps }}</td>
+
+                <td>{{ workout.calories }} kcal</td>
+
+                <td>{{ workout.accuracy }}%</td>
+
+                <td>{{ workout.duration }}</td>
+
+                <td>{{ workout.date }}</td>
+
+                <td>
+
+    <a href="/download_workout_pdf/{{ workout.id }}"
+       class="pdf-btn">
+
+        📄 PDF
+
+    </a>
+
+    <button
+        class="delete-btn"
+        onclick="openDeleteModal({{ workout.id }}, '{{ workout.exercise }}')">
+
+        🗑 Delete
+
+    </button>
+
+</td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="7" class="no-data">
+
+                    No workouts found.
+
+                </td>
+
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ===================================
+Delete Workout Modal
+=================================== -->
+
+<div id="deleteModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>⚠ Delete Workout</h2>
+
+        <p id="deleteMessage"></p>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel-btn"
+                onclick="closeDeleteModal()">
+
+                Cancel
+
+            </button>
+
+            <a
+                id="confirmDeleteBtn"
+                class="confirm-btn">
+
+                Delete
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===============================
+JavaScript
+=============================== -->
+
+<script>
+
+function openDeleteModal(id, exercise){
+
+    document.getElementById("deleteMessage").innerHTML =
+        `Are you sure you want to delete <b>${exercise}</b> workout?`;
+
+    document.getElementById("confirmDeleteBtn").href =
+        "/delete_workout/" + id;
+
+    document.getElementById("deleteModal").style.display = "flex";
+
+}
+
+function closeDeleteModal(){
+
+    document.getElementById("deleteModal").style.display = "none";
+
+}
+
+window.onclick = function(event){
+
+    const modal = document.getElementById("deleteModal");
+
+    if(event.target == modal){
+
+        closeDeleteModal();
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

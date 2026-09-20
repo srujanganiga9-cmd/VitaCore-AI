@@ -1,0 +1,444 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#0F172A;
+    color:white;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:40px auto;
+}
+
+h1{
+    font-size:42px;
+    margin-bottom:35px;
+}
+.meal-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.meal-card{
+
+    background:#1E293B;
+
+    border:1px solid #334155;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    height:auto;
+
+}
+
+.meal-card h2{
+
+    margin-bottom:20px;
+
+    color:white;
+
+}
+
+.food-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#111827;
+
+    border:1px solid #334155;
+
+    border-radius:12px;
+
+    padding:14px 18px;
+
+    margin-bottom:12px;
+
+    transition:.3s;
+
+}
+
+.food-item:hover{
+
+    border-color:#3B82F6;
+
+}
+
+.food-item h4{
+
+    margin-bottom:6px;
+
+    color:white;
+
+}
+
+.food-item p{
+
+    color:#94A3B8;
+
+}
+
+.empty{
+
+    color:#64748B;
+
+    font-style:italic;
+
+}
+/* ==========================
+      Top Header
+========================== */
+
+.top-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.top-header h1{
+
+    color:white;
+
+    font-size:40px;
+
+    margin-bottom:6px;
+
+}
+
+.top-header p{
+
+    color:#94A3B8;
+
+    font-size:15px;
+
+}
+
+.back-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        #3B82F6,
+        #7C3AED
+    );
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.back-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+.delete-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#EF4444;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+    background:#DC2626;
+
+    transform:scale(1.08);
+
+}
+/* ===========================
+   Delete Modal
+=========================== */
+
+.modal{
+
+    position:fixed;
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(6px);
+
+    z-index:9999;
+
+}
+
+.modal.show{
+
+    display:flex;
+
+}
+
+.modal-content{
+
+    width:430px;
+
+    background:#1E293B;
+
+    border:2px solid #334155;
+
+    border-radius:24px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+
+    animation:popup .25s ease;
+
+}
+
+@keyframes popup{
+
+    from{
+
+        transform:scale(.85);
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+        opacity:1;
+
+    }
+
+}
+
+.modal-icon{
+
+    width:85px;
+    height:85px;
+
+    margin:0 auto 20px;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #EF4444,
+        #DC2626
+    );
+
+    font-size:42px;
+
+    color:white;
+
+}
+
+.modal-content h2{
+
+    color:white;
+
+    font-size:32px;
+
+    margin-bottom:15px;
+
+}
+
+.modal-content p{
+
+    color:#CBD5E1;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    margin-bottom:30px;
+
+}
+
+.modal-content strong{
+
+    color:white;
+
+    font-size:22px;
+
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.cancel-btn,
+.delete-confirm-btn{
+
+    flex:1;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.cancel-btn{
+
+    background:#334155;
+
+    color:white;
+
+}
+
+.cancel-btn:hover{
+
+    background:#475569;
+
+}
+
+.delete-confirm-btn{
+
+    background:linear-gradient(
+        135deg,
+        #EF4444,
+        #DC2626
+    );
+
+    color:white;
+
+}
+
+.delete-confirm-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(239,68,68,.35);
+
+}
+/* ==========================
+      Summary Card
+========================== */
+
+.summary-card{
+
+    margin-top:40px;
+
+    background:#1E293B;
+
+    border:1px solid #334155;
+
+    border-radius:20px;
+
+    padding:30px;
+
+}
+
+.summary-card h2{
+
+    color:white;
+
+    margin-bottom:25px;
+
+}
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+.summary-item{
+
+    background:#111827;
+
+    border:1px solid #334155;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    text-align:center;
+
+}
+
+.summary-item h3{
+
+    color:white;
+
+    font-size:30px;
+
+    margin:10px 0;
+
+}
+
+.summary-item p{
+
+    color:#94A3B8;
+
+}

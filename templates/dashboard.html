@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>VitaCore AI| Dashboard</title>
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Dashboard CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+    <div id="overlay" class="overlay"></div>
+
+<div class="dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+<aside class="sidebar" id="sidebar">
+
+    <!-- ================= LOGO ================= -->
+
+    <div class="logo">
+
+        <button class="sidebar-close" onclick="closeSidebar()">×</button>
+
+
+    </div>
+
+    <!-- ================= PROFILE CARD ================= -->
+
+    <div class="profile-card" id="profile-card">
+
+        <div class="profile-avatar">
+
+            <i class="bi bi-person-fill"></i>
+
+        </div>
+
+        <div class="profile-info">
+
+            <h3>{{ user.name }}</h3>
+
+            <p>View Profile</p>
+
+        </div>
+
+    </div>
+
+    <!-- ================= SIDEBAR MENU ================= -->
+
+    <nav class="sidebar-menu">
+
+        <ul>
+
+            <li class="active">
+                <a href="{{ url_for('dashboard') }}">
+                    <i class="bi bi-house-door-fill"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('workout') }}">
+                    <i class="bi bi-activity"></i>
+                    Weekly Workout
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('diet') }}">
+                    <i class="bi bi-egg-fried"></i>
+                    Diet Planner
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('chatbot') }}">
+                    <i class="bi bi-robot"></i>
+                    AI Chatbot
+                </a>
+            </li>
+            <li>
+
+                <a href="{{ url_for('nutrition') }}">
+
+                     <i class="bi-heart-pulse-fill"></i>
+
+                         Smart Nutrition Analyzer
+                </a>
+            </li>  
+            <li>
+
+                 <a href="/today_intake" class="menu-item">
+
+                    <i class="bi bi-calendar2-check"></i>
+
+
+                     <span>Today's Intake</span>
+
+                </a>  
+
+            <li>
+                <a href="{{ url_for('exercise') }}">
+                    <i class="bi bi-camera-video"></i>
+                    Exercise Detection
+                </a>
+            </li>
+            <li>
+
+
+                 <a href="{{ url_for('workout_history') }}">
+
+                     <i class="bi bi-clipboard2-check"></i>
+
+                    <span>Workout History</span>
+                </a>
+            </li>    
+
+            <li>
+                <a href="{{ url_for('logout') }}">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</aside>
+    <!-- ================= MAIN ================= -->
+
+<main class="main-content">
+
+    <!-- ================= TOP BAR ================= -->
+
+    <header class="topbar">
+
+    <div class="topbar-left">
+
+        <button id="menu-btn" class="icon-btn">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        <div>
+
+            <h2>
+
+                Welcome, {{ user.name }} 👋
+
+            </h2>
+
+            <p>
+
+                Stay healthy and achieve your fitness goals.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="topbar-right">
+
+        <div class="clock-box">
+
+            <i class="bi bi-clock-fill"></i>
+
+            <span id="clock">00:00:00</span>
+
+        </div>
+
+        <button id="theme-toggle" class="icon-btn">
+
+            <i class="bi bi-moon-fill"></i>
+
+        </button>
+
+    </div>
+
+</header>
+
+    <!-- ================= STATS ================= -->
+
+    <div class="stats-grid">
+
+        <!-- BMI -->
+
+        <div class="stat-card">
+
+            <div class="icon blue">
+
+                <i class="bi bi-speedometer2"></i>
+
+            </div>
+
+            <h5>BMI</h5>
+
+            <h3>{{ bmi }}</h3>
+
+        </div>
+
+        <!-- Calories -->
+
+        <div class="stat-card">
+
+            <div class="icon orange">
+
+                <i class="bi bi-fire"></i>
+
+            </div>
+
+            <h5>Calories</h5>
+
+            <h3>
+                 {{ display_calories }}
+
+                /
+
+                 {{ calorie_goal }}
+        
+                 kcal
+             </h3>    
+
+    <div class="progress mt-3">
+
+        <div class="progress-bar bg-warning"
+
+             style="width:{{ calorie_progress }}%">
+
+        </div>
+
+    </div>
+
+    {% if calorie_completed %}
+
+        <p class="goal-completed">
+
+            Todays Goal Completed✅
+
+        </p>
+        <p class="extra">
+
+             +{{ extra_calories }} kcal extra consumed
+        </p>
+
+    {% else %}
+
+        <p class="remaining">
+
+            {{ remaining_calories }} kcal Remaining
+
+        </p>
+
+    {% endif %}
+
+</div>   
+ 
+        
+         <!-- Protein -->
+
+<div class="stat-card">
+
+    <div class="icon green">
+
+        <i class="bi bi-egg-fill"></i>
+
+    </div>
+
+    <h5>Protein</h5>
+
+    <h3>
+
+        {{ display_protein }}
+
+        /
+
+        {{ protein_goal }}
+
+        g
+
+    </h3>
+
+    <div class="progress mt-3">
+
+        <div class="progress-bar bg-success"
+
+             style="width:{{ protein_progress }}%">
+
+        </div>
+
+    </div>
+
+    {% if protein_completed %}
+
+        <p class="goal-completed">
+
+            todays  Goal Completed✅
+
+        </p>
+        <p class="extra">
+             +{{ extra_protein }} g extra protein consumed
+        </p>
+
+    {% else %}
+
+        <p class="remaining">
+
+            {{ remaining_protein }} g Remaining
+
+        </p>
+
+    {% endif %}
+
+</div>
+
+<div class="dashboard-card">
+
+    <div class="card-header-custom">
+
+        <h3>🎯 Today's Goals</h3>
+
+    </div>
+
+    <div class="card-body-custom">
+
+        <div class="goal-card">
+
+            {% if total_calories >= calorie_goal %}
+                <span class="goal-check completed">☑</span>
+            {% else %}
+                <span class="goal-check">☐</span>
+            {% endif %}
+
+            <span>Calories Goal</span>
+
+        </div>
+
+        <div class="goal-card">
+
+            {% if total_protein >= protein_goal %}
+                <span class="goal-check completed">☑</span>
+            {% else %}
+                <span class="goal-check">☐</span>
+            {% endif %}
+
+            <span>Protein Goal</span>
+
+        </div>
+
+        <div class="goal-card">
+
+            {% if water >= daily_water_goal %}
+                <span class="goal-check completed">☑</span>
+            {% else %}
+                <span class="goal-check">☐</span>
+            {% endif %}
+
+            <span>Water Goal</span>
+
+        </div>
+
+      
+
+
+
+    </div>
+
+</div>
+        
+       
+    </div>
+
+<!-- ================= WORKOUT & WATER ================= -->
+
+<div class="dashboard-row">
+
+    <!-- ================= WORKOUT CARD ================= -->
+<div class="dashboard-card workout-progress-card">
+
+   <div class="workout-header">
+
+    <div class="workout-icon">
+        🏋️
+    </div>
+
+    <div>
+
+        <h2>Weekly Workout Progress</h2>
+
+        <p>Stay consistent and complete your weekly plan.</p>
+
+    </div>
+
+</div>
+
+    <p class="text-muted">
+
+        Stay consistent and complete your weekly plan.
+
+    </p>
+
+    <div class="week-list">
+
+        {% set days = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+        ] %}
+
+        {% for day in days %}
+
+        <div class="week-item">
+
+            <span>{{ day }}</span>
+
+            {% if day in completed_days %}
+
+                <span class="text-success fw-bold">
+                    ✅
+                </span>
+
+            {% else %}
+
+                <span class="text-warning fw-bold">
+                    ⏳
+                </span>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <div class="mt-4">
+
+        <strong>
+
+            Progress:
+
+            {{ completed_count }}/7
+
+        </strong>
+
+    </div>
+
+    <div class="progress mt-2" style="height:15px;">
+
+        <div
+            class="progress-bar bg-success"
+
+            style="width:{{ weekly_progress }}%;">
+
+            {{ weekly_progress }}%
+
+        </div>
+
+    </div>
+
+    {% if completed_count == 7 %}
+
+    <div class="workout-success mt-3">
+
+         <h5>🎉 Congratulations!</h5>
+         <p><strong>You completed all 7 workouts this week. Amazing job! 💪</strong></p>
+    </div>
+
+    {% endif %}
+
+    <a href="{{ url_for('workout') }}"
+       class="btn btn-primary mt-4">
+
+        💪 View Workout
+
+    </a>
+
+</div>
+    
+    <!-- ================= WATER CARD ================= -->
+
+   <!-- ================= WATER SUMMARY CARD ================= -->
+
+<div class="dashboard-card">
+
+    <div class="card-header-custom">
+
+        <h3>
+            <i class="bi bi-droplet-fill"></i>
+            Today's Water Intake
+        </h3>
+
+    </div>
+
+    <div class="card-body-custom">
+
+        <!-- Water Statistics -->
+
+        <div class="water-stats">
+
+            <div class="water-box">
+
+                <span>Daily Goal</span>
+
+                <h2>{{ daily_water_goal }} ml</h2>
+
+            </div>
+
+            <div class="water-box">
+
+                <span>Current Intake</span>
+
+                <h2>{{ water }} ml</h2>
+
+            </div>
+
+        </div>
+
+        <!-- Progress Circle -->
+
+        <div class="water-circle">
+
+            <svg class="progress-ring" width="220" height="220">
+
+                <circle
+                    class="progress-ring-bg"
+                    cx="110"
+                    cy="110"
+                    r="90">
+                </circle>
+
+                <circle
+                    class="progress-ring-fill"
+                    cx="110"
+                    cy="110"
+                    r="90"
+                    style="stroke-dashoffset: calc(565 - (565 * {{ progress }}) / 100);">
+                </circle>
+
+            </svg>
+
+            <div class="progress-text">
+
+                <h2>{{ progress }}%</h2>
+
+                <span>Completed</span>
+
+            </div>
+
+        </div>
+
+        <!-- Goal Status -->
+
+        {% if progress >= 100 %}
+
+        <div class="goal-success">
+
+            🎉 Today's Water Goal Completed!
+
+        </div>
+
+        {% else %}
+
+        <div class="goal-remaining">
+
+            💧 {{ daily_water_goal - water }} ml Remaining
+
+        </div>
+
+        {% endif %}
+
+        <!-- Button -->
+
+        <a href="{{ url_for('water_tracker') }}"
+           class="card-btn water-open-btn">
+
+            💧 Open Water Tracker
+
+        </a>
+
+    </div>
+
+</div>
+</div>
+<!-- Close Workout & Water dashboard-row -->
+
+<!-- ================= FEATURES ================= -->
+
+<div class="feature-grid">
+
+    <!-- Nutrition -->
+    <div class="feature-card">
+
+        <div class="feature-icon">🥗</div>
+
+        <h3>Nutrition Analyzer</h3>
+
+        <p>Search foods and analyze their nutrition values.</p>
+
+        <a href="/nutrition" class="card-btn">Open</a>
+
+    </div>
+
+    <!-- Today's Intake -->
+    <div class="feature-card">
+
+        <div class="feature-icon">🍽</div>
+
+        <h3>Today's Intake</h3>
+
+        <p>View today's meals, calories and nutrition summary.</p>
+
+        <a href="/today_intake" class="card-btn">Open</a>
+
+    </div>
+
+    <!-- AI Diet -->
+    <div class="feature-card">
+
+        <div class="feature-icon">📝</div>
+
+        <h3>AI Diet Planner</h3>
+
+        <p>Generate a personalized AI diet plan based on your profile.</p>
+
+        <a href="/diet" class="card-btn">
+
+             Open Diet Planner
+        </a>
+
+    </div>
+
+    <!-- AI Chatbot -->
+    <div class="feature-card">
+
+        <div class="feature-icon">🤖</div>
+
+        <h3>AI Chatbot</h3>
+
+        <p>Ask fitness, workout and nutrition related questions.</p>
+
+        <a href="/chatbot" class="card-btn">
+
+            💬 Open Chatbot
+
+        </a>
+
+    </div>
+
+    <!-- Exercise -->
+    <div class="feature-card">
+
+        <div class="feature-icon">📹</div>
+
+        <h3>AI Exercise Detection</h3>
+
+        <p>
+
+            Start your camera and let VitaCore AI detect your exercises in real time.
+
+        </p>
+
+        <a href="{{ url_for('exercise') }}" class="card-btn">
+
+            ▶ Open Exercise
+
+        </a>
+
+    </div>
+
+    <!-- Workout -->
+    <div class="feature-card">
+
+        <div class="feature-icon">📊</div>
+
+        <h3>Workout History</h3>
+
+        <p>
+
+            View your previous workouts, repetitions and exercise progress.
+
+        </p>
+
+        <a href="{{ url_for('workout_history') }}" class="card-btn">
+
+            📈 View History
+
+        </a>
+
+    </div>
+
+</div>
+</main>
+</div>
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <!-- Hero Section -->
+
+    <div class="footer-top">
+
+        <h1>VitaCore AI</h1>
+
+        <p class="tagline">
+            Train Smarter • Eat Better • Live Healthier
+        </p>
+
+        <p class="subtitle">
+            AI Powered Personal Fitness Assistant built using Artificial
+            Intelligence, Computer Vision & Machine Learning.
+        </p>
+
+    </div>
+
+    <!-- Footer Content -->
+
+    <div class="footer-middle">
+
+        <!-- Built With -->
+
+        <div class="footer-box">
+
+            <h3>Built With</h3>
+
+            <ul>
+
+                <li>Python</li>
+                <li>Flask</li>
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>JavaScript</li>
+                <li>Bootstrap</li>
+                <li>SQLite</li>
+                <li>MediaPipe</li>
+                <li>OpenCV</li>
+
+            </ul>
+
+        </div>
+
+        <!-- Features -->
+
+        <div class="footer-box">
+
+            <h3>Key Features</h3>
+
+            <ul>
+
+                <li>AI Exercise Detection</li>
+                <li>AI Diet Planner</li>
+                <li>AI Fitness Chatbot</li>
+                <li>Workout Planner</li>
+                <li>BMI Calculator</li>
+                <li>Calorie Calculator</li>
+                <li>Protein Calculator</li>
+                <li>Water Intake Tracker</li>
+                <li>Workout Reports & History</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- Footer Bottom -->
+
+    <div class="footer-bottom">
+
+        <h4>Developed by</h4>
+
+        <h2>Srujan Ganiga</h2>
+
+        <p>Version 1.0</p>
+
+        <p>© 2026 VitaCore AI | All Rights Reserved</p>
+
+    </div>
+
+</footer>
+<!-- ================= PROFILE MODAL ================= -->
+
+<div id="profile-modal" class="profile-modal">
+
+    <div class="profile-content">
+
+        <button id="close-profile" class="close-profile">
+
+            <i class="bi bi-x-lg"></i>
+
+        </button>
+
+        <div class="profile-header">
+
+            <div class="profile-avatar-large">
+
+                <i class="bi bi-person-fill"></i>
+
+            </div>
+
+            <h2>{{ user.name }}</h2>
+
+            <p>VitaCore AI Member</p>
+
+        </div>
+
+        <div class="profile-details">
+
+            <div class="detail-box">
+                <h5>Age</h5>
+                <p>{{ user.age }}</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>Height</h5>
+                <p>{{ user.height }} cm</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>Weight</h5>
+                <p>{{ user.weight }} kg</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>Goal</h5>
+                <p>{{ user.goal }}</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>BMI</h5>
+                <p>{{ bmi }}</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>Calories</h5>
+                <p>{{ calories }} kcal</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>Protein</h5>
+                <p>{{ protein }} g</p>
+            </div>
+
+            <div class="detail-box">
+                <h5>Water Goal</h5>
+                <p>{{ daily_water_goal }} ml</p>
+            </div>
+
+        </div>
+
+        <div class="profile-buttons">
+
+    
+
+</div>
+
+    </div>
+
+</div>
+<!-- Dashboard JavaScript -->
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html> 

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nutrition Analyzer | VitaCore AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/nutrition.css') }}">
+
+</head>
+
+<body>
+    <div class="top-bar">
+
+    <a href="{{ url_for('dashboard') }}" class="back-btn">
+
+        <i class="bi bi-arrow-left"></i>
+
+        Dashboard
+
+    </a>
+
+</div>
+
+<div class="container">
+
+    <div class="nutrition-card">
+
+        <div class="header">
+
+    <div>
+        <h1>🥗</h1>
+    </div>
+
+    <h2>Smart Nutrition Analyzer</h2>
+
+    <p><strong>
+        Search healthy foods, calculate nutrition,
+        and track your daily intake.</strong>
+    </p>
+
+</div>
+
+        <div class="search-box">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="text"
+                id="foodSearch"
+                placeholder="Search Food...">
+
+        </div>
+
+        <!-- Suggestions -->
+
+        <div id="suggestions"></div>
+
+        <!-- Nutrition Card -->
+
+        <div id="nutritionResult"></div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/nutrition.js') }}"></script>
+
+<div id="toast"></div>
+
+</body>
+</html>
